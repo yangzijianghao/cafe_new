@@ -1,0 +1,48 @@
+{
+  "data": {
+    "dataset_name": "SEED",
+    "name": "random_split",
+    "root": "",
+    "train_file": "train_data.npy",
+    "test_file": "test_data.npy",
+    "total_channels": 62,
+    "normalization": "global"
+  },
+  "split": {
+    "type": "random_pre_split"
+  },
+  "sr": {
+    "base_channels": 32,
+    "target_channels": 62,
+    "replace_low_res_on_save": true
+  },
+  "schedule": {
+    "step_sizes": [10, 10, 10],
+    "selector": "sequential",
+    "selector_params": {}
+  },
+  "model": {
+    "name": "Transformer",
+    "hidden_channels": 256,
+    "num_layers": 6,
+    "nhead": 8,
+    "dropout": 0.1
+  },
+  "train": {
+    "epochs": 50,
+    "batch_size": 32,
+    "lr": 0.001,
+    "weight_decay": 0.0,
+    "val_ratio": 0.1,
+    "early_stopping": {
+      "patience": 10,
+      "min_delta": 1e-6
+    },
+    "seed": 42,
+    "deterministic": true
+  },
+  "runtime": {
+    "run_root": "runs",
+    "device": null
+  }
+}

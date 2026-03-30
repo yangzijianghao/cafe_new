@@ -1,0 +1,263 @@
+{
+  "dataset_info": {
+    "name": "ECoG",
+    "total_channels": 65,
+    "sampling_rate": 1000,
+    "time_points": 1001,
+    "description": "ECoG dataset with 65 channels"
+  },
+  
+  "data_sources": {
+    "random_split": {
+      "root": "",
+      "train_file": "train_data.npy",
+      "test_file": "test_data.npy",
+      "normalization": "global"
+    }
+  },
+  
+  "sr_ratios": {
+    "half": {
+      "base_channels": 33,
+      "target_channels": 65,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "quarter": {
+      "base_channels": 16,
+      "target_channels": 65,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "eighth": {
+      "base_channels": 8,
+      "target_channels": 65,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "half_even": {
+      "base_channels": 33,
+      "target_channels": 65,
+      "replace_low_res_on_save": true,
+      "initial_channels": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30,
+                          32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64]
+    },
+    "quarter_custom": {
+      "base_channels": 16,
+      "target_channels": 65,
+      "replace_low_res_on_save": true,
+      "initial_channels": [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60]
+    }
+  },
+  
+  "schedules": {
+    "uniform_10": {
+      "step_sizes": [10, 10, 12],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "uniform_8": {
+      "step_sizes": [8, 8, 8, 8],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "progressive_5_10_15": {
+      "step_sizes": [5, 10, 17],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "progressive_8_12_12": {
+      "step_sizes": [8, 12, 12],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "matrix_greedy": {
+      "step_sizes": [10, 10, 12],
+      "selector": "matrix_distance",
+      "selector_params": {
+        "mode": "greedy"
+      }
+    },
+    "matrix_balanced": {
+      "step_sizes": [10, 10, 12],
+      "selector": "matrix_distance",
+      "selector_params": {
+        "mode": "balanced"
+      }
+    },
+    "random_baseline": {
+      "step_sizes": [10, 10, 12],
+      "selector": "random",
+      "selector_params": {
+        "seed": 42
+      }
+    },
+    "custom_order_example": {
+      "step_sizes": [10, 10, 12],
+      "selector": "custom_order",
+      "selector_params": {
+        "channel_order": [33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+                          50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+                          43, 44, 45, 46, 47, 48, 49, 60, 61, 62, 63, 64]
+      }
+    }
+  },
+  
+  "models": {
+    "Conv_default": {
+      "name": "Conv",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "kernel_size": 7,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Conv_deep": {
+      "name": "Conv",
+      "hidden_channels": 256,
+      "num_layers": 8,
+      "kernel_size": 7,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Conv_wide": {
+      "name": "Conv",
+      "hidden_channels": 512,
+      "num_layers": 6,
+      "kernel_size": 7,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Conv_large_kernel": {
+      "name": "Conv",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "kernel_size": 15,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Transformer_default": {
+      "name": "Transformer",
+      "hidden_channels": 256,
+      "num_layers": 4,
+      "nhead": 8,
+      "dim_feedforward": 512,
+      "dropout": 0.1
+    },
+    "Transformer_deep": {
+      "name": "Transformer",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "nhead": 8,
+      "dim_feedforward": 512,
+      "dropout": 0.1
+    },
+    "Transformer_large": {
+      "name": "Transformer",
+      "hidden_channels": 512,
+      "num_layers": 6,
+      "nhead": 8,
+      "dim_feedforward": 2048,
+      "dropout": 0.1
+    },
+    "MLP_default": {
+      "name": "MLP",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "dropout": 0.1,
+      "expansion": 4
+    },
+    "MLP_deep": {
+      "name": "MLP",
+      "hidden_channels": 256,
+      "num_layers": 8,
+      "dropout": 0.1,
+      "expansion": 4
+    },
+    "MLP_wide": {
+      "name": "MLP",
+      "hidden_channels": 512,
+      "num_layers": 6,
+      "dropout": 0.1,
+      "expansion": 4
+    }
+  },
+  
+  "train_configs": {
+    "default": {
+      "epochs": 50,
+      "batch_size": 64,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "optimizer": "adam",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 10,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "transformer": {
+      "epochs": 50,
+      "batch_size": 16,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "optimizer": "adamw",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 10,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "fast": {
+      "epochs": 20,
+      "batch_size": 32,
+      "lr": 0.002,
+      "weight_decay": 0.0,
+      "optimizer": "adam",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 5,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "long_train": {
+      "epochs": 100,
+      "batch_size": 64,
+      "lr": 0.0005,
+      "weight_decay": 0.0,
+      "optimizer": "adam",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 15,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "no_early_stop": {
+      "epochs": 100,
+      "batch_size": 32,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "optimizer": "adam",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 100,
+        "min_delta": 0
+      },
+      "seed": 42,
+      "deterministic": true
+    }
+  },
+  
+  "runtime": {
+    "run_root": "runs",
+    "device": null
+  }
+}

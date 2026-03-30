@@ -1,0 +1,160 @@
+{
+  "dataset_info": {
+    "name": "CPSC2018",
+    "total_channels": 12,
+    "sampling_rate": 500,
+    "description": "CPSC2018 (ICBEB) dataset with 12-lead ECG, 1024 samples per beat"
+  },
+  
+  "data_sources": {
+    "random_split": {
+      "root": "",
+      "train_file": "train_data.npy",
+      "test_file": "test_data.npy",
+      "normalization": "global"
+    }
+  },
+  
+  "sr_ratios": {
+    "single": {
+      "base_channels": 1,
+      "target_channels": 12,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "half": {
+      "base_channels": 6,
+      "target_channels": 12,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "quarter": {
+      "base_channels": 3,
+      "target_channels": 12,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    }
+  },
+  
+  "schedules": {
+    "uniform_11": {
+      "step_sizes": [11],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "uniform_3": {
+      "step_sizes": [3, 3, 5],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "uniform_2": {
+      "step_sizes": [2, 2, 2, 2, 3],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "progressive_2_3": {
+      "step_sizes": [2, 3, 3, 3],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "matrix_greedy": {
+      "step_sizes": [3, 3, 5],
+      "selector": "matrix_distance",
+      "selector_params": {
+        "mode": "greedy"
+      }
+    }
+  },
+  
+  "models": {
+    "Conv_default": {
+      "name": "Conv",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "kernel_size": 7,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Conv_deep": {
+      "name": "Conv",
+      "hidden_channels": 512,
+      "num_layers": 12,
+      "kernel_size": 7,
+      "dropout": 0.2,
+      "use_dilation": true
+    },
+    "Transformer_default": {
+      "name": "Transformer",
+      "hidden_channels": 256,
+      "num_layers": 4,
+      "nhead": 8,
+      "dim_feedforward": 512,
+      "dropout": 0.1
+    },
+    "Transformer_deep": {
+      "name": "Transformer",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "nhead": 8,
+      "dim_feedforward": 512,
+      "dropout": 0.1
+    },
+    "MLP_default": {
+      "name": "MLP",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "dropout": 0.1,
+      "expansion": 4
+    }
+  },
+  
+  "train_configs": {
+    "default": {
+      "epochs": 50,
+      "batch_size": 128,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "optimizer": "adam",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 10,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "transformer": {
+      "epochs": 50,
+      "batch_size": 32,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "optimizer": "adamw",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 10,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "fast": {
+      "epochs": 20,
+      "batch_size": 64,
+      "lr": 0.002,
+      "weight_decay": 0.0,
+      "optimizer": "adam",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 5,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    }
+  },
+  
+  "runtime": {
+    "run_root": "",
+    "device": null
+  }
+}

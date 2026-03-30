@@ -1,0 +1,377 @@
+{
+  "dataset_info": {
+    "name": "sEMG_Handwriting",
+    "total_channels": 16,
+    "sampling_rate": 2000,
+    "time_points": 2000,
+    "description": "Surface EMG dataset with 16 channels from wrist-worn device"
+  },
+  
+  "data_sources": {
+    "random_split": {
+      "root": "",
+      "train_file": "train_data.npy",
+      "test_file": "test_data.npy",
+      "train_label_file": "train_label.npy",
+      "test_label_file": "test_label.npy",
+      "normalization": "global"
+    }
+  },
+  
+  "sr_ratios": {
+    "half": {
+      "base_channels": 8,
+      "target_channels": 16,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "quarter": {
+      "base_channels": 4,
+      "target_channels": 16,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "eighth": {
+      "base_channels": 2,
+      "target_channels": 16,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "half_even": {
+      "base_channels": 8,
+      "target_channels": 16,
+      "replace_low_res_on_save": true,
+      "initial_channels": [0, 2, 4, 6, 8, 10, 12, 14]
+    },
+    "half_odd": {
+      "base_channels": 8,
+      "target_channels": 16,
+      "replace_low_res_on_save": true,
+      "initial_channels": [1, 3, 5, 7, 9, 11, 13, 15]
+    },
+    "quarter_custom": {
+      "base_channels": 4,
+      "target_channels": 16,
+      "replace_low_res_on_save": true,
+      "initial_channels": [0, 4, 8, 12]
+    },
+    "cardinal_directions": {
+      "base_channels": 4,
+      "target_channels": 16,
+      "replace_low_res_on_save": true,
+      "initial_channels": [0, 4, 8, 12],
+      "comment": "Top, Right, Bottom, Left positions on wrist"
+    },
+    "diagonal_directions": {
+      "base_channels": 4,
+      "target_channels": 16,
+      "replace_low_res_on_save": true,
+      "initial_channels": [2, 6, 10, 14],
+      "comment": "Diagonal positions on wrist"
+    }
+  },
+  
+  "schedules": {
+    "uniform_4": {
+      "step_sizes": [4, 4],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "uniform_3": {
+      "step_sizes": [3, 3, 2],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "uniform_2": {
+      "step_sizes": [2, 2, 2, 2],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "progressive_2_3_3": {
+      "step_sizes": [2, 3, 3],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "progressive_1_3_4": {
+      "step_sizes": [1, 3, 4],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "matrix_greedy": {
+      "step_sizes": [4, 4],
+      "selector": "matrix_distance",
+      "selector_params": {
+        "mode": "greedy"
+      }
+    },
+    "matrix_balanced": {
+      "step_sizes": [4, 4],
+      "selector": "matrix_distance",
+      "selector_params": {
+        "mode": "balanced"
+      }
+    },
+    "circular_order": {
+      "step_sizes": [4, 4],
+      "selector": "custom_order",
+      "selector_params": {
+        "channel_order": [8, 9, 10, 11, 12, 13, 14, 15],
+        "comment": "Add channels in circular order around wrist"
+      }
+    },
+    "opposite_pairs": {
+      "step_sizes": [2, 2, 2, 2],
+      "selector": "custom_order",
+      "selector_params": {
+        "channel_order": [8, 0, 9, 1, 10, 2, 11, 3],
+        "comment": "Add opposite channels in pairs"
+      }
+    },
+    "random_baseline": {
+      "step_sizes": [4, 4],
+      "selector": "random",
+      "selector_params": {
+        "seed": 42
+      }
+    }
+  },
+  
+  "models": {
+    "Conv_default": {
+      "name": "Conv",
+      "hidden_channels": 128,
+      "num_layers": 6,
+      "kernel_size": 7,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Conv_deep": {
+      "name": "Conv",
+      "hidden_channels": 128,
+      "num_layers": 8,
+      "kernel_size": 7,
+      "dropout": 0.15,
+      "use_dilation": true
+    },
+    "Conv_wide": {
+      "name": "Conv",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "kernel_size": 7,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Conv_large_kernel": {
+      "name": "Conv",
+      "hidden_channels": 128,
+      "num_layers": 6,
+      "kernel_size": 15,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Conv_small": {
+      "name": "Conv",
+      "hidden_channels": 64,
+      "num_layers": 4,
+      "kernel_size": 5,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Transformer_default": {
+      "name": "Transformer",
+      "hidden_channels": 128,
+      "num_layers": 4,
+      "nhead": 8,
+      "dim_feedforward": 512,
+      "dropout": 0.1
+    },
+    "Transformer_deep": {
+      "name": "Transformer",
+      "hidden_channels": 128,
+      "num_layers": 6,
+      "nhead": 8,
+      "dim_feedforward": 512,
+      "dropout": 0.15
+    },
+    "Transformer_large": {
+      "name": "Transformer",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "nhead": 8,
+      "dim_feedforward": 1024,
+      "dropout": 0.1
+    },
+    "Transformer_small": {
+      "name": "Transformer",
+      "hidden_channels": 64,
+      "num_layers": 3,
+      "nhead": 4,
+      "dim_feedforward": 256,
+      "dropout": 0.1
+    },
+    "MLP_default": {
+      "name": "MLP",
+      "hidden_channels": 128,
+      "num_layers": 6,
+      "dropout": 0.1,
+      "expansion": 4
+    },
+    "MLP_deep": {
+      "name": "MLP",
+      "hidden_channels": 128,
+      "num_layers": 8,
+      "dropout": 0.15,
+      "expansion": 4
+    },
+    "MLP_wide": {
+      "name": "MLP",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "dropout": 0.1,
+      "expansion": 4
+    },
+    "MLP_small": {
+      "name": "MLP",
+      "hidden_channels": 64,
+      "num_layers": 4,
+      "dropout": 0.1,
+      "expansion": 4
+    }
+  },
+  
+  "train_configs": {
+    "default": {
+      "epochs": 200,
+      "batch_size": 128,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "optimizer": "adam",
+      "val_ratio": 0.15,
+      "early_stopping": {
+        "patience": 15,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "transformer": {
+      "epochs": 100,
+      "batch_size": 64,
+      "lr": 0.0005,
+      "weight_decay": 0.0001,
+      "optimizer": "adamw",
+      "val_ratio": 0.15,
+      "early_stopping": {
+        "patience": 15,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true,
+      "scheduler": {
+        "type": "cosine",
+        "T_max": 100,
+        "eta_min": 1e-6
+      }
+    },
+    "fast": {
+      "epochs": 50,
+      "batch_size": 256,
+      "lr": 0.002,
+      "weight_decay": 0.0001,
+      "optimizer": "adam",
+      "val_ratio": 0.15,
+      "early_stopping": {
+        "patience": 10,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "long_train": {
+      "epochs": 200,
+      "batch_size": 64,
+      "lr": 0.0005,
+      "weight_decay": 0.0001,
+      "optimizer": "adam",
+      "val_ratio": 0.15,
+      "early_stopping": {
+        "patience": 30,
+        "min_delta": 1e-7
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "aggressive": {
+      "epochs": 80,
+      "batch_size": 128,
+      "lr": 0.003,
+      "weight_decay": 0.0001,
+      "optimizer": "adam",
+      "val_ratio": 0.15,
+      "early_stopping": {
+        "patience": 12,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "small_dataset": {
+      "epochs": 150,
+      "batch_size": 32,
+      "lr": 0.0005,
+      "weight_decay": 0.0005,
+      "optimizer": "adam",
+      "val_ratio": 0.2,
+      "early_stopping": {
+        "patience": 20,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true,
+      "comment": "For datasets with ~1500 samples"
+    },
+    "no_early_stop": {
+      "epochs": 150,
+      "batch_size": 128,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "optimizer": "adam",
+      "val_ratio": 0.15,
+      "early_stopping": {
+        "patience": 150,
+        "min_delta": 0
+      },
+      "seed": 42,
+      "deterministic": true
+    }
+  },
+  
+  "runtime": {
+    "run_root": "",
+    "device": null,
+    "num_workers": 4,
+    "pin_memory": true
+  },
+  
+  "comments": {
+    "channels": "16 channels arranged circularly around wrist",
+    "channel_layout": "Ch0-Ch15 form a ring, each ~22.5 degrees apart",
+    "muscle_groups": {
+      "Ch0-3": "Extensors (back of wrist)",
+      "Ch4-7": "Thumb side muscles",
+      "Ch8-11": "Flexors (palm side)",
+      "Ch12-15": "Pinky side muscles"
+    },
+    "sr_ratio_notes": {
+      "half": "8 channels uniformly sampled",
+      "quarter": "4 channels (cardinal directions)",
+      "eighth": "2 channels (opposite sides)"
+    },
+    "model_size_notes": {
+      "small": "For quick experiments or small datasets",
+      "default": "Balanced performance/efficiency",
+      "wide": "For better representation learning",
+      "deep": "For complex temporal patterns"
+    }
+  }
+}

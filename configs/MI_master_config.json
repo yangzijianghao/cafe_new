@@ -1,0 +1,166 @@
+{
+  "dataset_info": {
+    "name": "MI",
+    "total_channels": 256,
+    "sampling_rate": null,
+    "description": "Motor Imagery EEG, shape: train (1914, 256, 2081), test (479, 256, 2081)"
+  },
+
+  "data_sources": {
+    "random_split": {
+      "root": "",
+      "train_file": "train_data.npy",
+      "test_file": "test_data.npy",
+      "normalization": "global"
+    },
+    "cross_subject": {
+      "root": "",
+      "train_file": "train_data.npy",
+      "test_file": "test_data.npy",
+      "normalization": "global"
+    }
+  },
+
+  "sr_ratios": {
+    "half": {
+      "base_channels": 128,
+      "target_channels": 256,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "quarter": {
+      "base_channels": 64,
+      "target_channels": 256,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "eighth": {
+      "base_channels": 32,
+      "target_channels": 256,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    },
+    "sixteenth": {
+      "base_channels": 16,
+      "target_channels": 256,
+      "replace_low_res_on_save": true,
+      "initial_channels": null
+    }
+  },
+
+  "schedules": {
+    "uniform_10": {
+      "step_sizes": [10, 10, 10],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "uniform_5": {
+      "step_sizes": [5, 5, 5, 5, 5, 5],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "progressive_5_10_15": {
+      "step_sizes": [5, 10, 15],
+      "selector": "sequential",
+      "selector_params": {}
+    },
+    "matrix_greedy": {
+      "step_sizes": [10, 10, 10],
+      "selector": "matrix_distance",
+      "selector_params": {
+        "mode": "greedy"
+      }
+    },
+    "random_baseline": {
+      "step_sizes": [10, 10, 10],
+      "selector": "random",
+      "selector_params": {
+        "seed": 42
+      }
+    }
+  },
+
+  "models": {
+    "Conv_default": {
+      "name": "Conv",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "kernel_size": 7,
+      "dropout": 0.1,
+      "use_dilation": true
+    },
+    "Conv_deep": {
+      "name": "Conv",
+      "hidden_channels": 512,
+      "num_layers": 12,
+      "kernel_size": 7,
+      "dropout": 0.2,
+      "use_dilation": true
+    },
+    "Transformer_default": {
+      "name": "Transformer",
+      "hidden_channels": 256,
+      "num_layers": 4,
+      "nhead": 8,
+      "dim_feedforward": 512,
+      "dropout": 0.1
+    },
+    "MLP_default": {
+      "name": "MLP",
+      "hidden_channels": 256,
+      "num_layers": 6,
+      "dropout": 0.1,
+      "expansion": 4
+    }
+  },
+
+  "train_configs": {
+    "default": {
+      "epochs": 100,
+      "batch_size": 64,
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "optimizer": "adam",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 10,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "transformer": {
+      "epochs": 100,
+      "batch_size": 16,
+      "lr": 0.0001,
+      "weight_decay": 0.0001,
+      "optimizer": "adamw",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 10,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    },
+    "fast": {
+      "epochs": 20,
+      "batch_size": 64,
+      "lr": 0.002,
+      "weight_decay": 0.0,
+      "optimizer": "adam",
+      "val_ratio": 0.1,
+      "early_stopping": {
+        "patience": 5,
+        "min_delta": 1e-6
+      },
+      "seed": 42,
+      "deterministic": true
+    }
+  },
+
+  "runtime": {
+    "run_root": "",
+    "device": null
+  }
+}
