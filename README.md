@@ -51,16 +51,12 @@ Download datasets:
    - sEMG: https://fb-ctrl-oss.s3.amazonaws.com/generic-neuromotor-interface-data
    - AJILE12: https://dandiarchive.org/dandiset/000055/0.220127.0436
 
-### Training Workflow
-The training process consists of four sequential steps:
+### Start Training and Testing
 
+After completing the environment setup and data preparation, you can directly start the entire training and evaluation pipeline by running the following command:
 
+```bash
 
-### Optional: Extract Latent Space Data
+python train_test_new.py
 
-
-### Evaluation
-
-
-### :gear: Configuration
-The main configuration file is `config.yaml`.
+```
