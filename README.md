@@ -24,22 +24,43 @@
 - Linux (Recommended)
 
 ### Installation
-1. Clone repository:
-   ```bash
-   git clone https://github.com/yourusername/yourproject.git
-   cd yourproject
-   ```
+1.  **Download the repository files:**
 
-2. Create and activate conda environment:
-   ```bash
-   conda create -n eegsr python=3.11.7
-   conda activate eegsr
-   ```
+    Since the project is hosted on an anonymous platform, please download the repository files via the provided anonymous link. You can use any method that works for you, such as:
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+    - Using the web interface to download files individually
+
+    - Using browser extensions or tools to download the entire repository
+
+    - Using any third-party tools designed for anonymous repository cloning
+
+    - Manually copying the code files
+
+
+
+
+    After downloading, extract and navigate to the project directory.
+
+2.  **Create and activate conda environment:**
+
+    ```bash
+
+    conda create -n eegsr python=3.11.7
+
+    conda activate eegsr
+
+    ```
+
+
+
+
+3.  **Install dependencies:**
+
+    ```bash
+
+    pip install -r requirements.txt
+
+    ```
 
 ## :computer: Training
 
