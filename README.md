@@ -1,4 +1,4 @@
-# CAFE: Channel-Autoregressive Factorized Encoding for Robust Biosignal Spatial Super-Resolution
+# Progressively Conditioned Solving for Biosignal Spatial Super-Resolution under Sparse Sensing
 
 <p align="center">
 
